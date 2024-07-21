@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Define the folder to store uploaded files
-app.config['UPLOAD_FOLDER'] = 'uploads'  # Adjust the folder name as needed
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['CSV_FOLDER'] = 'csv'
 
 # HTML templates
@@ -119,48 +119,153 @@ home_template = """ <!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to UME Potts Point</h1>
-        <p>UME Potts Point, 2011, is a comfortable, convenient, and modern Sydney accommodation. Located near Potts Point Veterinary Hospital.</p>
-        <p>There are many restaurants near UME Potts Point to ensure residents don’t have to worry about food. Residents can satiate their taste buds with diverse cuisines served at these restaurants, which include The Apollo Restaurant, Cho Cho San, Ms.G's, Ezra, and Malabar South Indian Restaurant.</p>
-        <p>Love to party? Then, The Roosevelt, Potts Point Hotel, The New Hampton Hotel, Kings Cross Hotel, and Darlo Bar are the places for you where you can enjoy nice drinks and groove till your feet get tired.</p>
         <div class="buttons">
-            <button class="button" id="openModal">House Rules</button>
+            <a href="/house-rules" class="button">House Rules</a>
             <a href="/room-list" class="button">Room List</a>
             <a href="/maintenance" class="button">Maintenance Request</a>
             <a href="/guest-form" class="button">Guest Form</a>
             <a href="https://chat.whatsapp.com/GDHSNY6TZbSEkvGmen0kFu" class="button">WhatsApp Group</a>
+            <a href="/dep-guide" class="button">Departure Guidelines</a>
         </div>
+        <h1>Welcome to UME Potts Point</h1>
+        <img src="https://resource.rentcafe.com/image/upload/w_130,h_130/q_auto,f_auto,c_limit,w_130/s3au/2/82412/ume-footerlogo.jpg"/ style="display: block; margin-left: auto; margin-right: auto; border-radius:50%;width: 10%;"><br>
+        <p>UME Potts Point, (39A Elizabeth Bay Road, Elizabeth Bay, 2011), is a comfortable, convenient, and modern Sydney accommodation. Located near Potts Point Veterinary Hospital.</p>
+        <p>There are many restaurants near UME Potts Point to ensure residents don’t have to worry about food. Residents can satiate their taste buds with diverse cuisines served at these restaurants, which include The Apollo Restaurant, Cho Cho San, Ms.G's, Ezra, and Malabar South Indian Restaurant.</p>
+        <p>Love to party? Then, The Roosevelt, Potts Point Hotel, The New Hampton Hotel, Kings Cross Hotel, and Darlo Bar are the places for you where you can enjoy nice drinks and groove till your feet get tired.</p>
+        <p>
+            <h2>Neighborhood Essentials Guide</h2>
+            <h3>Supermarkets</h3>
+            <ul>
+                <li>Coles</li>
+                <li>Woolworth / Woolies</li>
+                <li>Harris Farm Markets</li>
+                <li>ALDI</li>
+            </ul>
+            <h3>Appliance Stores</h3>
+            <ul>
+                <li>Bunnnings</li>
+                <li>JB Hi-Fi</li>
+                <li>Harvey Norman</li>
+            </ul>
+            <h3>Departmental Stores</h3>
+            <ul>
+                <li>Target</li>
+                <li>Kmart</li>
+                <li>Big W</li>
+                <li>IKEA</li>
+                <li>Myer</li>
+            </ul>
+        </p>
     </div>
-
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-body">
-                <iframe src=" static/HouseRules.pdf" frameborder="0"></iframe>
-            </div>
-        </div>
-    </div>
-    <script>
-        var modal = document.getElementById("myModal");
-        var btn = document.getElementById("openModal");
-        var span = document.getElementsByClassName("close")[0];
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>
 
  """
+
+house_rules = """ 
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UME House Rules</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            p, li {
+                font-size: 14px;
+                color: #555;
+                line-height: 1.6;
+            }
+            ul {
+                list-style-type: disc;
+                padding-left: 20px;
+            }
+            .buttons {
+            text-align: center;
+            margin-top: 20px;
+            }
+            .button {
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #555;
+            }
+            @media (max-width: 600px) {
+                .container {
+                    padding: 10px;
+                    margin-top: 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>UME Potts Point House Rules</h2>
+            <h3>GENERAL RULES OF CONDUCT</h3>
+            <ul>
+                <li>Disrespectful behavior toward other guests or hosts will not be tolerated and may lead to termination of the agreement.</li>
+                <li>All tenants are entitled to quiet enjoyment of their home.</li>
+                <li>Tenants involved in fighting will be evicted.</li>
+                <li>Harassment in any form will not be tolerated and may result in immediate eviction.</li>
+                <li>All tenants must be respectful of other people’s property.</li>
+                <li>Most common areas are monitored with closed circuit television cameras (CCTV) 24 hours a day for security purposes. Private areas, such as bedrooms or bathrooms, are not monitored.</li>
+            </ul>
+            
+            <h3>ABOUT YOUR AGREEMENT</h3>
+            <ul>
+                <li>Residents’ guests must adhere to UME house rules and vacate the property by 10:00 PM. Late check outs after 10 PM will incur a fee of $100.</li>
+                <li>Each occupant of the house must only take the studio assigned to their actual agreement. It is not permitted to change your studio unless given authorization from UME. The resident agrees to always lock doors and gates behind them at the premises and is responsible for the security of their own studio.</li>
+            </ul>
+            
+            <h3>COMMUNAL AREAS AND BATHROOMS</h3>
+            <ul>
+                <li>The use of smoking products of any sort, including all cigarette products and all smoke-producing products (cigars, pipes, e-cigarettes, hookahs, vaporizers, etc.) is prohibited in the studio, in the common areas, or in hallways. Any tenant found smoking will be fined <b>$250.</b></li>
+                <li>Kitchen and communal areas must be always clean and tidy. Residents found leaving the kitchen unclean and untidy will be searched via cameras to determine ownership or responsibility. Leaving the kitchen unclean and untidy will incur a fee of $50.</li>
+                <li>UME is not responsible for food stored in the kitchen. It’s recommended to use a lockable refrigerator bag for any food that you are storing in the common fridges. Food can only be stored in the fridge for up to one week and freezer for up to 2 weeks.</li>
+                <li>Tenants using the communal kitchens must always monitor their cooking and are required to keep the kitchens clean and hygienic and to turn all appliances off when not in use. Dishes left unwashed in communal kitchen areas will be removed and disposed of.</li>
+                <li>It’s the tenant’s responsibility to bring their rubbish out and not to leave them at their door or outside the bins provided.</li>
+                <li>If the smoke alarms and/or sprinklers are activated, the resident responsible will be instructed to pay the full cost of a call-out fee charged by the NSW Fire Brigade. The fee is between $1800 to $2000.</li>
+                <li>We do not allow pets to stay at the property.</li>
+                <li>There should be no personal belongings left in the common areas as you are sharing your living space with other residents. Community Managers and House Managers have been given authority to discard any items they find laying around in the common areas.</li>
+            </ul>
+            
+            <h3>BEDROOMS</h3>
+            <ul>
+                <li>Please be mindful of what you use to hang or stick things on the walls of your room. Should there be any damage to the walls or furniture, the cost of repairing this damage will be taken from the security deposit.</li>
+                <li>Residents are responsible to keep their rooms clean and tidy throughout the duration of the agreement.</li>
+            </ul>
+            <div class="buttons">
+                <a href="/" class="button">Home</a>
+            </div>
+        </div>
+        </div>
+    </body>
+    </html>
+"""
 
 maintenance_form_template = """ <!DOCTYPE html>
 <html lang="en">
@@ -172,8 +277,8 @@ maintenance_form_template = """ <!DOCTYPE html>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 5%;
-            background-color: #1a1a1a;
+            padding: 0;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -215,7 +320,7 @@ maintenance_form_template = """ <!DOCTYPE html>
             border: none;
             padding: 10px;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 10px;
         }
         input[type="submit"]:hover {
             background-color: #218838;
@@ -246,8 +351,6 @@ maintenance_form_template = """ <!DOCTYPE html>
 
             body{
                 padding-top: 50px;
-                padding-left:20px;
-                padding-right:20px;
                 height: auto;
                 width: auto;
                 overflow-x: auto;
@@ -338,7 +441,7 @@ guest_form_template = """ <!DOCTYPE html>
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -380,7 +483,7 @@ guest_form_template = """ <!DOCTYPE html>
             border: none;
             padding: 10px;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 10px;
         }
         input[type="submit"]:hover {
             background-color: #218838;
@@ -407,7 +510,7 @@ guest_form_template = """ <!DOCTYPE html>
             background-color: #333;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 10px;
         }
         .button:hover {
             background-color: #555;
@@ -653,11 +756,112 @@ room_list_template = """ <!DOCTYPE html>
 </html>
 
 """
- # Paste the room list template HTML here
+
+departure_guide = """ 
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UME House Rules</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            p, li {
+                font-size: 14px;
+                color: #555;
+                line-height: 1.6;
+            }
+            ul {
+                list-style-type: disc;
+                padding-left: 20px;
+            }
+            .buttons {
+            text-align: center;
+            margin-top: 20px;
+            }
+            .button {
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #555;
+            }
+            @media (max-width: 600px) {
+                .container {
+                    padding: 10px;
+                    margin-top: 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>UME Potts Point Departure Guidelines</h2>
+            <h3></h3>
+            <ul>
+                <b><li>Message House Manager about your departure</li></b>
+            </ul>
+            
+            <h3>Room</h3>
+            <ul>
+                <li>The provided bed sheet, quilt/duvet, and pillow are exclusively assigned for your personal use. Kindly ensure to take these items with you upon departure.</li>
+                <li>Failure to remove rubbish and personal belongings may incur additional cleaning fees, up to $250.</li>
+            </ul>
+            
+            <h3>Kitchen Cabinet And Fridge Space</h3>
+            <ul>
+                <li>Before leaving, please empty your kitchen cabinet, trash bins and fridge space.</li>
+                <li>Unlock your kitchen cabinet.</li>
+            </ul>
+            
+            <h3>MATTERS PROTECTOR</h3>
+            <ul>
+                <li>Please do not take the mattress protector. It is a part of the property. Removal will result in a replacement fee of $100.</li>
+            </ul>
+            <div class="buttons">
+                <a href="/" class="button">Home</a>
+            </div>
+        </div>
+        </div>
+    </body>
+    </html>
+"""
+
 
 @app.route('/')
 def home():
     return render_template_string(home_template)
+
+@app.route('/house-rules')
+def house_rules_page():
+    return render_template_string(house_rules)
+
+@app.route('/dep-guide')
+def dep_guide_page():
+    return render_template_string(departure_guide)
 
 @app.route('/maintenance')
 def maintenance():
@@ -752,7 +956,7 @@ def submit_guest():
                 'timestamp': timestamp,
                 'resident_name': resident_name,
                 'room': room,
-                'guest_names': ', '.join(guest_names),  # Join guest names with a comma
+                'guest_names': ', '.join(guest_names),
                 'arrival_date': arrival_date,
                 'departure_date': departure_date
             })
