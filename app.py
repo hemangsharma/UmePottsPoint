@@ -119,6 +119,7 @@ home_template = """ <!DOCTYPE html>
 </head>
 <body>
     <div class="container">
+        <h1>Welcome to UME Potts Point</h1><br>
         <div class="buttons">
             <a href="/house-rules" class="button">House Rules</a>
             <a href="/room-list" class="button">Room List</a>
@@ -127,8 +128,8 @@ home_template = """ <!DOCTYPE html>
             <a href="https://chat.whatsapp.com/GDHSNY6TZbSEkvGmen0kFu" class="button">WhatsApp Group</a>
             <a href="/dep-guide" class="button">Departure Guidelines</a>
         </div>
-        <h1>Welcome to UME Potts Point</h1>
-        <img src="https://resource.rentcafe.com/image/upload/w_130,h_130/q_auto,f_auto,c_limit,w_130/s3au/2/82412/ume-footerlogo.jpg"/ style="display: block; margin-left: auto; margin-right: auto; border-radius:50%;width: 10%;"><br>
+        <br>
+        <h2>About</h2>
         <p>UME Potts Point, (39A Elizabeth Bay Road, Elizabeth Bay, 2011), is a comfortable, convenient, and modern Sydney accommodation. Located near Potts Point Veterinary Hospital.</p>
         <p>There are many restaurants near UME Potts Point to ensure residents don’t have to worry about food. Residents can satiate their taste buds with diverse cuisines served at these restaurants, which include The Apollo Restaurant, Cho Cho San, Ms.G's, Ezra, and Malabar South Indian Restaurant.</p>
         <p>Love to party? Then, The Roosevelt, Potts Point Hotel, The New Hampton Hotel, Kings Cross Hotel, and Darlo Bar are the places for you where you can enjoy nice drinks and groove till your feet get tired.</p>
@@ -215,11 +216,21 @@ house_rules = """
                 background-color: #555;
             }
             @media (max-width: 600px) {
-                .container {
-                    padding: 10px;
-                    margin-top: 10px;
-                }
+
+            body{
+                padding-top: 50px;
+                padding-left:20px;
+                padding-right:20px;
+                height: auto;
+                width: auto;
+                overflow-x: auto;
             }
+            .container {
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 20%;
+            }
+        }
         </style>
     </head>
     <body>
@@ -351,6 +362,22 @@ maintenance_form_template = """ <!DOCTYPE html>
 
             body{
                 padding-top: 50px;
+                height: auto;
+                width: auto;
+                overflow-x: auto;
+            }
+            .container {
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 20%;
+            }
+        }
+        @media (max-width: 600px) {
+
+            body{
+                padding-top: 50px;
+                padding-left:20px;
+                padding-right:20px;
                 height: auto;
                 width: auto;
                 overflow-x: auto;
@@ -735,15 +762,15 @@ room_list_template = """ <!DOCTYPE html>
                 <tr>
                     <th>Room Number</th>
                     <th>Resident Name</th>
-                    <th>Contact Email</th>
+                    <th>Resident Name</th>
                 </tr>
             </thead>
             <tbody>
                 {% for room in rooms %}
                 <tr>
                     <td>{{ room['Unit'] }}</td>
-                    <td>{{ room['Occupant 1 [Full name]'] }}</td>
-                    <td>{{ room['Contact Email For Occupant 1'] }}</td>
+                    <td>{{ room['Resident Name'] }}</td>
+                    <td>{{ room['Second Resident Name'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -810,11 +837,21 @@ departure_guide = """
                 background-color: #555;
             }
             @media (max-width: 600px) {
-                .container {
-                    padding: 10px;
-                    margin-top: 10px;
-                }
+
+            body{
+                padding-top: 50px;
+                padding-left:20px;
+                padding-right:20px;
+                height: auto;
+                width: auto;
+                overflow-x: auto;
             }
+            .container {
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 20%;
+            }
+        }
         </style>
     </head>
     <body>
@@ -879,7 +916,8 @@ def room_list():
         df = pd.read_csv(room_csv_path)
         
         # Drop rows where "Occupant 1 [Full name]" is empty
-        df = df.dropna(subset=['Occupant 1 [Full name]'])
+        df = df.dropna(subset=['Resident Name'])
+        df['Second Resident Name'] = df['Second Resident Name'].fillna('-')
         
         room_data = df.to_dict(orient='records')
     except FileNotFoundError:
