@@ -484,7 +484,7 @@ maintenance_form_template = """ <!DOCTYPE html>
             </select>
             <label for="description">Description of Problem:</label>
             <textarea id="description" name="description" required></textarea>
-            <label for="area">Affected Area/Unit/Room:</label>
+            <label for="area">Affected Area / Room:</label>
             <input type="text" id="area" name="area" required>
             <input type="submit" value="Submit">
         </form>
@@ -1046,11 +1046,11 @@ def submit_maintenance():
         with open(filename, 'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({'timestamp': timestamp, 'name': name, 'room of tenant': room, 'description of problem': description, 'area affected': area})
+            writer.writerow({'timestamp': timestamp, 'Requester Name': name, 'Requester Room No': room, 'Description of Problem': description, 'Area Affected': area})
     else:
         with open(filename, 'a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerow({'timestamp': timestamp, 'name': name, 'room of tenant': room, 'description of problem': description, 'area affected': area})
+            writer.writerow({'timestamp': timestamp, 'Requester Name': name, 'Requester Room No': room, 'Description of Problem': description, 'Area Affected': area})
 
     return 'Data submitted successfully!'
 
