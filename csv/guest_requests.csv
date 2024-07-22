@@ -1,3 +1,4 @@
 timestamp,resident_name,room,guest_names,arrival_date,departure_date
 2024-07-21 14:40:35,Test,Studio A,Test,2024-07-21,2024-07-22
 2024-07-22 12:06:18,Tets,Studio A,"Test 1, Test 2",2024-07-22,2024-07-22
+2024-07-22 12:10:03,Test,Studio A,Test 1 (0000000000),2024-07-22,2024-07-22

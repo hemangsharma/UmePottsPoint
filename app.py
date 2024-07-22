@@ -129,34 +129,57 @@ home_template = """ <!DOCTYPE html>
             <a href="/dep-guide" class="button">Departure Guidelines</a>
         </div>
         <br>
-        <h2>About</h2>
-        <p>UME Potts Point, (39A Elizabeth Bay Road, Elizabeth Bay, 2011), is a comfortable, convenient, and modern Sydney accommodation. Located near Potts Point Veterinary Hospital.</p>
-        <p>There are many restaurants near UME Potts Point to ensure residents don’t have to worry about food. Residents can satiate their taste buds with diverse cuisines served at these restaurants, which include The Apollo Restaurant, Cho Cho San, Ms.G's, Ezra, and Malabar South Indian Restaurant.</p>
-        <p>Love to party? Then, The Roosevelt, Potts Point Hotel, The New Hampton Hotel, Kings Cross Hotel, and Darlo Bar are the places for you where you can enjoy nice drinks and groove till your feet get tired.</p>
-        <p>Feel free to message House Manger at +61450595354</p>
+        <p>Hi, my name is Hemang, and I am your House Manager. Welcome to UME Potts Point! Here, you will find important links and information designed to ensure you have a comfortable and enjoyable stay.If you have questions related to mail, dryers, etc visit House Rules Section.</p>
+        <p>If you need any assistance, please feel free to contact me at +61 450 595 354.</p>
+        <p>
+            <h2>Your Rooms Should Have:</h2>
+            <ol>
+                <li>Quilt/Duvet + Cover</li>
+                <li>Bedsheet</li>
+                <li>Pillow and Pillow Cover</li>
+                <li>Mini Fridge</li>
+                <li>Table Lamp</li>
+            </ol>
+            You have to buy a fan or a heater based on your needs.
+        </p>
         <p>
             <h2>Essentials Guide</h2>
-            <h3>Supermarkets</h3>
-            <ul>
-                <li>Coles</li>
-                <li>Woolworth / Woolies</li>
-                <li>Harris Farm Markets</li>
-                <li>ALDI</li>
-            </ul>
-            <h3>Appliance Stores</h3>
-            <ul>
-                <li>Bunnnings</li>
-                <li>JB Hi-Fi</li>
-                <li>Harvey Norman</li>
-            </ul>
-            <h3>Departmental Stores</h3>
-            <ul>
-                <li>Target</li>
-                <li>Kmart</li>
-                <li>Big W</li>
-                <li>IKEA</li>
-                <li>Myer</li>
-            </ul>
+                <h3>Supermarkets</h3>
+                <ul>
+                    <li>Coles</li>
+                    <li>Woolworth / Woolies</li>
+                    <li>Harris Farm Markets</li>
+                    <li>ALDI</li>
+                </ul>
+                <h3>Appliance Stores</h3>
+                <ul>
+                    <li>Bunnnings</li>
+                    <li>JB Hi-Fi</li>
+                    <li>Harvey Norman</li>
+                </ul>
+                <h3>Departmental Stores</h3>
+                <ul>
+                    <li>Target</li>
+                    <li>Kmart</li>
+                    <li>Big W</li>
+                    <li>IKEA</li>
+                    <li>Myer</li>
+                </ul>
+                <h3>Restaurants</h3>
+                <ul>
+                    <li>The Apollo</li>
+                    <li>Cho Cho San</li>
+                    <li>Ms.G's</li>
+                    <li>Ezra</li>
+                    <li>Malabar South Indian Restaurant</li>
+                </ul>
+                <h3>Love to party?</h3>
+                <ul>
+                    <li>The Roosevelt</li>
+                    <li>Potts Point Hotel</li>
+                    <li>The New Hampton Hotel</li>
+                    <li>Kings Cross Hotel</li>
+                </ul>
         </p>
     </div>
 </body>
@@ -245,10 +268,6 @@ house_rules = """
                 <li>Harassment in any form will not be tolerated and may result in immediate eviction.</li>
                 <li>All tenants must be respectful of other people’s property.</li>
                 <li>Most common areas are monitored with closed circuit television cameras (CCTV) 24 hours a day for security purposes. Private areas, such as bedrooms or bathrooms, are not monitored.</li>
-            </ul>
-            
-            <h3>ABOUT YOUR AGREEMENT</h3>
-            <ul>
                 <li>Residents’ guests must adhere to UME house rules and vacate the property by 10:00 PM. Late check outs after 10 PM will incur a fee of $100.</li>
                 <li>Each occupant of the house must only take the studio assigned to their actual agreement. It is not permitted to change your studio unless given authorization from UME. The resident agrees to always lock doors and gates behind them at the premises and is responsible for the security of their own studio.</li>
             </ul>
@@ -274,7 +293,7 @@ house_rules = """
                 <li>UME is not responsible for food stored in the kitchen. It’s recommended to use a lockable refrigerator bag for any food that you are storing in the common fridges. Food can only be stored in the fridge for up to one week and freezer for up to 2 weeks.</li>
                 <li>Tenants using the communal kitchens must always monitor their cooking and are required to keep the kitchens clean and hygienic and to turn all appliances off when not in use. Dishes left unwashed in communal kitchen areas will be removed and disposed of.</li>
                 <li>It’s the tenant’s responsibility to bring their rubbish out and not to leave them at their door or outside the bins provided.</li>
-                <li>If the smoke alarms and/or sprinklers are activated, the resident responsible will be instructed to pay the full cost of a call-out fee charged by the NSW Fire Brigade. The fee is between $1800 to $2000.</li>
+                <li>If the smoke alarms and/or sprinklers are activated, the resident responsible will be instructed to pay the full cost of a call-out fee charged by the NSW Fire Brigade. The fee is $2000.</li>
                 <li>We do not allow pets to stay at the property.</li>
                 <li>There should be no personal belongings left in the common areas as you are sharing your living space with other residents. Community Managers and House Managers have been given authority to discard any items they find laying around in the common areas.</li>
             </ul>
@@ -540,7 +559,7 @@ guest_form_template = """
                 margin-bottom: 5px;
                 color: #555;
             }
-            input[type="text"], select, input[type="date"] {
+            input[type="text"], input[type="tel"], select, input[type="date"] {
                 margin-bottom: 15px;
                 padding: 10px;
                 border: 1px solid #ccc;
@@ -702,8 +721,19 @@ guest_form_template = """
                     guestInput.setAttribute('name', `guest_name_${i}`);
                     guestInput.required = true;
 
+                    const phoneLabel = document.createElement('label');
+                    phoneLabel.setAttribute('for', `guest_phone_${i}`);
+                    phoneLabel.textContent = `Guest ${i} Phone Number:`;
+                    const phoneInput = document.createElement('input');
+                    phoneInput.setAttribute('type', 'tel');
+                    phoneInput.setAttribute('id', `guest_phone_${i}`);
+                    phoneInput.setAttribute('name', `guest_phone_${i}`);
+                    phoneInput.required = true;
+
                     guestsContainer.appendChild(guestLabel);
                     guestsContainer.appendChild(guestInput);
+                    guestsContainer.appendChild(phoneLabel);
+                    guestsContainer.appendChild(phoneInput);
                 }
             }
 
@@ -731,7 +761,6 @@ guest_form_template = """
         </script>
     </body>
     </html>
-
 """
 
 room_list_template = """ <!DOCTYPE html>
@@ -1011,17 +1040,17 @@ def submit_maintenance():
 
     # Save the data to a CSV file
     filename = os.path.join(app.config['CSV_FOLDER'], 'maintenance_requests.csv')
-    fieldnames = ['timestamp', 'name', 'room', 'description', 'area']
+    fieldnames = ['timestamp', 'Requester Name', 'Requester Room No', 'Description of Problem', 'Area Affected']
 
     if not os.path.isfile(filename):
         with open(filename, 'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({'timestamp': timestamp, 'name': name, 'room': room, 'description': description, 'area': area})
+            writer.writerow({'timestamp': timestamp, 'name': name, 'room of tenant': room, 'description of problem': description, 'area affected': area})
     else:
         with open(filename, 'a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerow({'timestamp': timestamp, 'name': name, 'room': room, 'description': description, 'area': area})
+            writer.writerow({'timestamp': timestamp, 'name': name, 'room of tenant': room, 'description of problem': description, 'area affected': area})
 
     return 'Data submitted successfully!'
 
@@ -1034,13 +1063,14 @@ def submit_guest():
         arrival_date = request.form['arrival_date']
         departure_date = request.form['departure_date']
 
-        # Retrieve guest names dynamically
-        guest_names = []
+        # Retrieve guest names and phone numbers dynamically
+        guest_data = []
         for i in range(1, num_guests + 1):
             guest_name = request.form.get(f'guest_name_{i}', '')
-            if guest_name:
-                guest_names.append(guest_name)
-        
+            guest_phone = request.form.get(f'guest_phone_{i}', '')
+            if guest_name and guest_phone:
+                guest_data.append({'name': guest_name, 'phone': guest_phone})
+
         # Get the current date and time
         now = datetime.now()
         timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -1050,7 +1080,7 @@ def submit_guest():
 
         # Save the data to a CSV file
         filename = os.path.join(app.config['CSV_FOLDER'], 'guest_requests.csv')
-        fieldnames = ['timestamp', 'resident_name', 'room', 'guest_names', 'arrival_date', 'departure_date']
+        fieldnames = ['timestamp', 'resident_name', 'room', 'guest_data', 'arrival_date', 'departure_date']
 
         if not os.path.isfile(filename):
             with open(filename, 'w', newline='') as file:
@@ -1063,7 +1093,7 @@ def submit_guest():
                 'timestamp': timestamp,
                 'resident_name': resident_name,
                 'room': room,
-                'guest_names': ', '.join(guest_names),
+                'guest_data': ', '.join([f"{guest['name']} ({guest['phone']})" for guest in guest_data]),
                 'arrival_date': arrival_date,
                 'departure_date': departure_date
             })
@@ -1074,6 +1104,7 @@ def submit_guest():
         return f"Error: Missing field {e}", 400
     except Exception as e:
         return f"An unexpected error occurred: {e}", 500
+
 
 
 if __name__ == '__main__':
