@@ -133,8 +133,9 @@ home_template = """ <!DOCTYPE html>
         <p>UME Potts Point, (39A Elizabeth Bay Road, Elizabeth Bay, 2011), is a comfortable, convenient, and modern Sydney accommodation. Located near Potts Point Veterinary Hospital.</p>
         <p>There are many restaurants near UME Potts Point to ensure residents don’t have to worry about food. Residents can satiate their taste buds with diverse cuisines served at these restaurants, which include The Apollo Restaurant, Cho Cho San, Ms.G's, Ezra, and Malabar South Indian Restaurant.</p>
         <p>Love to party? Then, The Roosevelt, Potts Point Hotel, The New Hampton Hotel, Kings Cross Hotel, and Darlo Bar are the places for you where you can enjoy nice drinks and groove till your feet get tired.</p>
+        <p>Feel free to message House Manger at +61450595354</p>
         <p>
-            <h2>Neighborhood Essentials Guide</h2>
+            <h2>Essentials Guide</h2>
             <h3>Supermarkets</h3>
             <ul>
                 <li>Coles</li>
@@ -251,6 +252,20 @@ house_rules = """
                 <li>Residents’ guests must adhere to UME house rules and vacate the property by 10:00 PM. Late check outs after 10 PM will incur a fee of $100.</li>
                 <li>Each occupant of the house must only take the studio assigned to their actual agreement. It is not permitted to change your studio unless given authorization from UME. The resident agrees to always lock doors and gates behind them at the premises and is responsible for the security of their own studio.</li>
             </ul>
+
+            <h3>MAILS</h3>
+            <ul>
+                <li>You can find your new mails on gorund floor.</li>
+                <li>All the older mails are moved to study area after a day.</li>
+                <li>All the uncollected mails get discraded after a month.</li>
+            </ul>
+
+            <h3>WASHING MACHINES AND DRYERS</h3>
+            <ul>
+                <li>You will find two washing machines and two dryers on rooftop.</li>
+                <li>Please clean the filters of dryers after and before use.</li>
+                <li>Please let washing machine dry after use, in order to avoid mold.</li>
+            </ul>
             
             <h3>COMMUNAL AREAS AND BATHROOMS</h3>
             <ul>
@@ -268,6 +283,12 @@ house_rules = """
             <ul>
                 <li>Please be mindful of what you use to hang or stick things on the walls of your room. Should there be any damage to the walls or furniture, the cost of repairing this damage will be taken from the security deposit.</li>
                 <li>Residents are responsible to keep their rooms clean and tidy throughout the duration of the agreement.</li>
+            </ul>
+
+            <h3>VACUUM CLEANERS</h3>
+            <ul>
+                <li>There are 6 vacuum cleaner on ground floor.</li>
+                <li>It is resident's responsibility to clean and empty vacuum cleaners after use.</li>
             </ul>
             <div class="buttons">
                 <a href="/" class="button">Home</a>
@@ -453,216 +474,264 @@ maintenance_form_template = """ <!DOCTYPE html>
             <a href="/" class="button">Home</a>
         </div>
     </div>
+    <script>
+        const form = document.querySelector('form');
+        const notification = document.getElementById('notification');
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            const response = await fetch('/submit-maintenance', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                notification.textContent = 'Data submitted successfully!';
+                form.reset();
+                setTimeout(() => notification.textContent = '', 3000);
+            } else {
+                notification.textContent = 'Error submitting data. Please try again.';
+            }
+        });
+    </script>
 </body>
 </html>
  """
 
-guest_form_template = """ <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UME Potts Point Guest Request Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"], select, input[type="date"] {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        .notification {
-            text-align: center;
-            margin-top: 10px;
-            color: green;
-        }
-        .guest-fields {
-            margin-bottom: 15px;
-        }
-        .guest-fields input {
-            margin-bottom: 5px;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-        }
-        .button:hover {
-            background-color: #555;
-        }
-        @media (max-width: 600px) {
-
-            body{
-                padding-top: 50px;
-                padding-left:20px;
-                padding-right:20px;
-                height: auto;
-                width: auto;
-                overflow-x: auto;
+guest_form_template = """ 
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UME Potts Point Guest Request Form</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100vw;
             }
             .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+                box-sizing: border-box;
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+            label {
+                margin-bottom: 5px;
+                color: #555;
+            }
+            input[type="text"], select, input[type="date"] {
+                margin-bottom: 15px;
                 padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                background-color: #28a745;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+            input[type="submit"]:hover {
+                background-color: #218838;
+            }
+            .notification {
+                text-align: center;
                 margin-top: 10px;
-                margin-bottom: 20%;
+                color: green;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>UME Potts Point Guest Request Form</h2>
-        <form id="guest-form" action="/submit-guest" method="post">
-            <label for="resident_name">Resident's Name:</label>
-            <input type="text" id="resident_name" name="resident_name" required>
-            <label for="room">Your Room Number:</label>
-            <select id="room" name="room" required>
-                <option value="">Select Room</option>
-                <option value="Studio A">Studio A</option>
-                <option value="Studio B">Studio B</option>
-                <option value="01">Unit 1</option>
-                <option value="02">Unit 2</option>
-                <option value="03">Unit 3</option>
-                <option value="04">Unit 4</option>
-                <option value="05">Unit 5</option>
-                <option value="06">Unit 6</option>
-                <option value="07">Unit 7</option>
-                <option value="08">Unit 8</option>
-                <option value="09">Unit 9</option>
-                <option value="10">Unit 10</option>
-                <option value="11">Unit 11</option>
-                <option value="12">Unit 12</option>
-                <option value="13">Unit 13</option>
-                <option value="14">Unit 14</option>
-                <option value="15">Unit 15</option>
-                <option value="16">Unit 16</option>
-                <option value="17">Unit 17</option>
-                <option value="18">Unit 18</option>
-                <option value="19">Unit 19</option>
-                <option value="20">Unit 20</option>
-                <option value="21">Unit 21</option>
-                <option value="22">Unit 22</option>
-                <option value="23">Unit 23</option>
-                <option value="24">Unit 24</option>
-                <option value="25">Unit 25</option>
-                <option value="26">Unit 26</option>
-                <option value="27">Unit 27</option>
-                <option value="28">Unit 28</option>
-                <option value="29">Unit 29</option>
-                <option value="30">Unit 30</option>
-                <option value="31">Unit 31</option>
-                <option value="32">Unit 32</option>
-                <option value="33">Unit 33</option>
-                <option value="34">Unit 34</option>
-                <option value="35">Unit 35</option>
-                <option value="36">Unit 36</option>
-                <option value="37">Unit 37</option>
-                <option value="38">Unit 38</option>
-                <option value="39">Unit 39</option>
-                <option value="40">Unit 40</option>
-            </select>
-            <label for="num_guests">Number of Guests:</label>
-            <select id="num_guests" name="num_guests" required>
-                <option value="">Select Number of Guests</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <div id="guests-container">
-                <!-- Guest name fields will be dynamically added here -->
+            .error {
+                color: red;
+            }
+            .guest-fields {
+                margin-bottom: 15px;
+            }
+            .guest-fields input {
+                margin-bottom: 5px;
+            }
+            .buttons {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button {
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: white;
+                text-decoration: none;
+                border-radius: 10px;
+            }
+            .button:hover {
+                background-color: #555;
+            }
+            @media (max-width: 600px) {
+
+                body{
+                    padding-top: 50px;
+                    padding-left:20px;
+                    padding-right:20px;
+                    height: auto;
+                    width: auto;
+                    overflow-x: auto;
+                }
+                .container {
+                    padding: 10px;
+                    margin-top: 10px;
+                    margin-bottom: 20%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>UME Potts Point Guest Request Form</h2>
+            <form id="guest-form" action="/submit-guest" method="post">
+                <label for="resident_name">Resident's Name:</label>
+                <input type="text" id="resident_name" name="resident_name" required>
+                <label for="room">Your Room Number:</label>
+                <select id="room" name="room" required>
+                    <option value="">Select Room</option>
+                    <option value="Studio A">Studio A</option>
+                    <option value="Studio B">Studio B</option>
+                    <option value="01">Unit 1</option>
+                    <option value="02">Unit 2</option>
+                    <option value="03">Unit 3</option>
+                    <option value="04">Unit 4</option>
+                    <option value="05">Unit 5</option>
+                    <option value="06">Unit 6</option>
+                    <option value="07">Unit 7</option>
+                    <option value="08">Unit 8</option>
+                    <option value="09">Unit 9</option>
+                    <option value="10">Unit 10</option>
+                    <option value="11">Unit 11</option>
+                    <option value="12">Unit 12</option>
+                    <option value="13">Unit 13</option>
+                    <option value="14">Unit 14</option>
+                    <option value="15">Unit 15</option>
+                    <option value="16">Unit 16</option>
+                    <option value="17">Unit 17</option>
+                    <option value="18">Unit 18</option>
+                    <option value="19">Unit 19</option>
+                    <option value="20">Unit 20</option>
+                    <option value="21">Unit 21</option>
+                    <option value="22">Unit 22</option>
+                    <option value="23">Unit 23</option>
+                    <option value="24">Unit 24</option>
+                    <option value="25">Unit 25</option>
+                    <option value="26">Unit 26</option>
+                    <option value="27">Unit 27</option>
+                    <option value="28">Unit 28</option>
+                    <option value="29">Unit 29</option>
+                    <option value="30">Unit 30</option>
+                    <option value="31">Unit 31</option>
+                    <option value="32">Unit 32</option>
+                    <option value="33">Unit 33</option>
+                    <option value="34">Unit 34</option>
+                    <option value="35">Unit 35</option>
+                    <option value="36">Unit 36</option>
+                    <option value="37">Unit 37</option>
+                    <option value="38">Unit 38</option>
+                    <option value="39">Unit 39</option>
+                    <option value="40">Unit 40</option>
+                </select>
+                <label for="num_guests">Number of Guests:</label>
+                <select id="num_guests" name="num_guests" required>
+                    <option value="">Select Number of Guests</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <div id="guests-container">
+                    <!-- Guest name fields will be dynamically added here -->
+                </div>
+                <label for="arrival_date">Arrival Date:</label>
+                <input type="date" id="arrival_date" name="arrival_date" required>
+                <label for="departure_date">Departure Date:</label>
+                <input type="date" id="departure_date" name="departure_date" required>
+                <input type="submit" value="Submit">
+            </form>
+            <div class="notification" id="notification"></div>
+            <div class="buttons">
+                <a href="/" class="button">Home</a>
             </div>
-            <label for="arrival_date">Arrival Date:</label>
-            <input type="date" id="arrival_date" name="arrival_date" required>
-            <label for="departure_date">Departure Date:</label>
-            <input type="date" id="departure_date" name="departure_date" required>
-            <input type="submit" value="Submit">
-        </form>
-        <div class="notification" id="notification"></div>
-        <div class="buttons">
-            <a href="/" class="button">Home</a>
         </div>
-    </div>
-    <script>
-        const numGuestsSelect = document.getElementById('num_guests');
-        const guestsContainer = document.getElementById('guests-container');
+        <script>
+            const numGuestsSelect = document.getElementById('num_guests');
+            const guestsContainer = document.getElementById('guests-container');
+            const form = document.getElementById('guest-form');
+            const notificationDiv = document.getElementById('notification');
 
-        function updateGuestFields() {
-            const numGuests = parseInt(numGuestsSelect.value);
-            guestsContainer.innerHTML = '';  // Clear existing guest fields
+            function updateGuestFields() {
+                const numGuests = parseInt(numGuestsSelect.value);
+                guestsContainer.innerHTML = '';  // Clear existing guest fields
 
-            for (let i = 1; i <= numGuests; i++) {
-                const guestLabel = document.createElement('label');
-                guestLabel.setAttribute('for', `guest_name_${i}`);
-                guestLabel.textContent = `Guest ${i} Name:`;
-                const guestInput = document.createElement('input');
-                guestInput.setAttribute('type', 'text');
-                guestInput.setAttribute('id', `guest_name_${i}`);
-                guestInput.setAttribute('name', `guest_name_${i}`);
-                guestInput.required = true;
+                for (let i = 1; i <= numGuests; i++) {
+                    const guestLabel = document.createElement('label');
+                    guestLabel.setAttribute('for', `guest_name_${i}`);
+                    guestLabel.textContent = `Guest ${i} Name:`;
+                    const guestInput = document.createElement('input');
+                    guestInput.setAttribute('type', 'text');
+                    guestInput.setAttribute('id', `guest_name_${i}`);
+                    guestInput.setAttribute('name', `guest_name_${i}`);
+                    guestInput.required = true;
 
-                guestsContainer.appendChild(guestLabel);
-                guestsContainer.appendChild(guestInput);
+                    guestsContainer.appendChild(guestLabel);
+                    guestsContainer.appendChild(guestInput);
+                }
             }
-        }
 
-        numGuestsSelect.addEventListener('change', updateGuestFields);
-        updateGuestFields();  // Initialize fields based on the default value
-    </script>
-</body>
-</html>
+            numGuestsSelect.addEventListener('change', updateGuestFields);
+            updateGuestFields();
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                fetch('/submit-guest', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    notificationDiv.textContent = data;
+                    notificationDiv.classList.remove('error');
+                })
+                .catch(error => {
+                    notificationDiv.textContent = `An error occurred: ${error}`;
+                    notificationDiv.classList.add('error');
+                });
+            });
+        </script>
+    </body>
+    </html>
+
 """
 
 room_list_template = """ <!DOCTYPE html>
@@ -1005,6 +1074,7 @@ def submit_guest():
         return f"Error: Missing field {e}", 400
     except Exception as e:
         return f"An unexpected error occurred: {e}", 500
+
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
