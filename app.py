@@ -3,10 +3,11 @@ import os
 import pandas as pd
 import csv
 from datetime import datetime
+from PIL import Image
+import uuid
 
 app = Flask(__name__)
 
-# Define the folder to store uploaded files
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['CSV_FOLDER'] = 'csv'
 
@@ -318,7 +319,8 @@ house_rules = """
     </html>
 """
 
-maintenance_form_template = """ <!DOCTYPE html>
+maintenance_form_template = """ 
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -357,7 +359,7 @@ maintenance_form_template = """ <!DOCTYPE html>
             margin-bottom: 5px;
             color: #555;
         }
-        input[type="text"], textarea, select {
+        input[type="text"], textarea, select, input[type="file"] {
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -399,25 +401,8 @@ maintenance_form_template = """ <!DOCTYPE html>
         }
 
         @media (max-width: 600px) {
-
-            body{
+            body {
                 padding-top: 50px;
-                height: auto;
-                width: auto;
-                overflow-x: auto;
-            }
-            .container {
-                padding: 10px;
-                margin-top: 10px;
-                margin-bottom: 20%;
-            }
-        }
-        @media (max-width: 600px) {
-
-            body{
-                padding-top: 50px;
-                padding-left:20px;
-                padding-right:20px;
                 height: auto;
                 width: auto;
                 overflow-x: auto;
@@ -433,12 +418,12 @@ maintenance_form_template = """ <!DOCTYPE html>
 <body>
     <div class="container">
         <h2>UME Potts Point Maintenance Request Form</h2>
-        <form action="/submit-maintenance" method="post">
+        <form action="/submit-maintenance" method="post" enctype="multipart/form-data">
             <label for="name">Resident's Name:</label>
             <input type="text" id="name" name="name" required>
             <label for="room">Your Room Number:</label>
             <select id="room" name="room" required>
-                <option value="">Select Room</option>
+                <option value="No Room">Select Room</option>
                 <option value="Studio A">Studio A</option>
                 <option value="Studio B">Studio B</option>
                 <option value="01">Unit 1</option>
@@ -486,6 +471,10 @@ maintenance_form_template = """ <!DOCTYPE html>
             <textarea id="description" name="description" required></textarea>
             <label for="area">Affected Area / Room:</label>
             <input type="text" id="area" name="area" required>
+            <label for="image1">Upload Image 1:</label>
+            <input type="file" id="image1" name="image1" accept="image/*">
+            <label for="image2">Upload Image 2:</label>
+            <input type="file" id="image2" name="image2" accept="image/*">
             <input type="submit" value="Submit">
         </form>
         <div class="notification" id="notification"></div>
@@ -517,6 +506,7 @@ maintenance_form_template = """ <!DOCTYPE html>
     </script>
 </body>
 </html>
+
  """
 
 guest_form_template = """ 
@@ -763,123 +753,157 @@ guest_form_template = """
     </html>
 """
 
-room_list_template = """ <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UME Potts Point Room List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 2%;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            box-sizing: border-box;
-            max-height: calc(100vh - 4%);
-            overflow-y: auto;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-top: 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            overflow-x: auto; /* Add horizontal scroll if needed */
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #555;
-        }
-        @media (max-width: 600px) {
-
-            body{
-                padding-top: 50px;
-                height: auto;
-                width: auto;
-                overflow-x: auto;
+room_list_template = """ 
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UME Potts Point Room List</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 2%;
+                background-color: #f4f4f4;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100vw;
+                box-sizing: border-box;
+                overflow: hidden;
             }
             .container {
-                padding: 10px;
-                margin-top: 10px;
-                margin-bottom: 20%;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 800px;
+                box-sizing: border-box;
+                max-height: calc(100vh - 4%);
+                overflow-y: auto;
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+                margin-top: 0;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                overflow-x: auto; /* Add horizontal scroll if needed */
+                margin-bottom: 20px; /* Space between tables */
             }
             table, th, td {
-                font-size: 14px;
+                border: 1px solid #ccc;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .buttons {
+                text-align: center;
+                margin-top: 20px;
             }
             .button {
-                width: 50%;
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>UME Potts Point Room List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Room Number</th>
-                    <th>Resident Name</th>
-                    <th>Resident Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for room in rooms %}
-                <tr>
-                    <td>{{ room['Unit'] }}</td>
-                    <td>{{ room['Resident Name'] }}</td>
-                    <td>{{ room['Second Resident Name'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="buttons">
-            <a href="/" class="button">Home</a>
+            .button:hover {
+                background-color: #555;
+            }
+            @media (max-width: 600px) {
+                body {
+                    padding-top: 50px;
+                    height: auto;
+                    width: auto;
+                    overflow-x: auto;
+                }
+                .container {
+                    padding: 10px;
+                    margin-top: 10px;
+                    margin-bottom: 20%;
+                }
+                table, th, td {
+                    font-size: 14px;
+                }
+                .button {
+                    width: 50%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>UME Potts Point Room List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Room Numbers / Facilities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basement</td>
+                        <td>Communal Kitchen, Communal Fridges, Kitchen Cabinets, Study Area, Studio A & B, Bin Area</td>
+                    </tr>
+                    <tr>
+                        <td>Ground Floor</td>
+                        <td>1 to 7</td>
+                    </tr>
+                    <tr>
+                        <td>First Floor</td>
+                        <td>8 to 18</td>
+                    </tr>
+                    <tr>
+                        <td>Second Floor</td>
+                        <td>19 to 29</td>
+                    </tr>
+                    <tr>
+                        <td>Third Floor</td>
+                        <td>30 to 40</td>
+                    </tr>
+                    <tr>
+                        <td>Rooftop</td>
+                        <td>Washing Machine, Dryer, BBQ, Communal Kitchen</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room Number</th>
+                        <th>Resident Name</th>
+                        <th>Resident Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td>{{ room['Unit'] }}</td>
+                        <td>{{ room['Resident Name'] }}</td>
+                        <td>{{ room['Second Resident Name'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="buttons">
+                <a href="/" class="button">Home</a>
+            </div>
         </div>
-    </div>
-</body>
-</html>
-
+    </body>
+    </html>
 """
 
 departure_guide = """ 
@@ -1035,24 +1059,54 @@ def submit_maintenance():
     now = datetime.now()
     timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
 
-    # Ensure the uploads folder exists
+    # Create unique IDs for the request and images
+    image_ids = []
+
+    # Handle image uploads
+    for i in range(1, 3):
+        image = request.files.get(f'image{i}')
+        if image:
+            image_id = str(uuid.uuid4())
+            image_ids.append(image_id)
+            image_path = os.path.join(app.config['CSV_FOLDER'], f'{image_id}.jpg')
+            
+            # Open the image and convert it to RGB if necessary
+            img = Image.open(image)
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
+            img.save(image_path, format='JPEG', optimize=True, quality=85)
+
     os.makedirs(app.config['CSV_FOLDER'], exist_ok=True)
 
-    # Save the data to a CSV file
     filename = os.path.join(app.config['CSV_FOLDER'], 'maintenance_requests.csv')
-    fieldnames = ['timestamp', 'Requester Name', 'Requester Room No', 'Description of Problem', 'Area Affected']
+    fieldnames = ['timestamp', 'Requester Name', 'Requester Room No', 'Description of Problem', 'Area Affected', 'Image IDs']
 
     if not os.path.isfile(filename):
         with open(filename, 'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({'timestamp': timestamp, 'Requester Name': name, 'Requester Room No': room, 'Description of Problem': description, 'Area Affected': area})
+            writer.writerow({
+                'timestamp': timestamp,
+                'Requester Name': name,
+                'Requester Room No': room,
+                'Description of Problem': description,
+                'Area Affected': area,
+                'Image IDs': ', '.join(image_ids)
+            })
     else:
         with open(filename, 'a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerow({'timestamp': timestamp, 'Requester Name': name, 'Requester Room No': room, 'Description of Problem': description, 'Area Affected': area})
+            writer.writerow({
+                'timestamp': timestamp,
+                'Requester Name': name,
+                'Requester Room No': room,
+                'Description of Problem': description,
+                'Area Affected': area,
+                'Image IDs': ', '.join(image_ids)
+            })
 
     return 'Data submitted successfully!'
+
 
 @app.route('/submit-guest', methods=['POST'])
 def submit_guest():
