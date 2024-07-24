@@ -1,6 +1,18 @@
 # UmePottsPoint
 
-This project is a web application built using Flask for residents of <a href="https://www.ume.com.au"> UME Potts Point</a>.
+This project contains the house rules for <a href="https://www.ume.com.au"> UME Potts Point</a>, presented in a digital format to streamline communication and ensure easy access for all residents.<br>
+
+The purpose of this repository is to provide a clear, accessible, and digital version of the house rules for UME accommodations. This ensures that all residents have easy access to the rules, helping to maintain a safe, respectful, and enjoyable living environment. <br>
+
+This digital version of the UME House Rules solves several problems and reduces reliance on manual work and paperwork in the following ways:
+
+## Benefits
+
+- **Accessibility**: Residents can easily access the rules online at any time, ensuring they are always aware of the guidelines.
+- **Environmentally Friendly**: Reduces the need for printed materials, saving paper and contributing to environmental sustainability.
+- **Efficiency**: Streamlines the onboarding process by providing new residents with immediate access to the rules, reducing the need for physical handouts and meetings.
+- **Transparency**: Ensures that all residents have access to the same information, promoting fairness and consistency.
+- **Security**: By clearly outlining the rules, potential disputes can be minimized, and the safety and enjoyment of all residents can be maintained.
 
 ## Features
 
