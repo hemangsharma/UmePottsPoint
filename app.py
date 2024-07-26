@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['CSV_FOLDER'] = 'csv'
+app.config['IMAGES_SUBFOLDER'] = 'images'
 
 # HTML templates
 home_template = """ <!DOCTYPE html>
@@ -327,192 +328,245 @@ house_rules = """
 
 maintenance_form_template = """ 
     <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UME Potts Point Maintenance Request Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"], textarea, select, input[type="file"] {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        .notification {
-            text-align: center;
-            margin-top: 10px;
-            color: green;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #555;
-        }
-
-        @media (max-width: 600px) {
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UME Potts Point Maintenance Request Form</title>
+        <style>
             body {
-                padding-top: 50px;
-                height: auto;
-                width: auto;
-                overflow-x: auto;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100vw;
             }
             .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 500px;
+                box-sizing: border-box;
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+            label {
+                margin-bottom: 5px;
+                color: #555;
+            }
+            input[type="text"], textarea, select, input[type="file"] {
+                margin-bottom: 15px;
                 padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                background-color: #28a745;
+                color: #fff;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+            input[type="submit"]:hover {
+                background-color: #218838;
+            }
+            .notification {
+                text-align: center;
                 margin-top: 10px;
-                margin-bottom: 20%;
+                color: green;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>UME Potts Point Maintenance Request Form</h2>
-        <form action="/submit-maintenance" method="post" enctype="multipart/form-data">
-            <label for="name">Resident's Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="room">Your Room Number:</label>
-            <select id="room" name="room" required>
-                <option value="No Room">Select Room</option>
-                <option value="Studio A">Studio A</option>
-                <option value="Studio B">Studio B</option>
-                <option value="01">Unit 1</option>
-                <option value="02">Unit 2</option>
-                <option value="03">Unit 3</option>
-                <option value="04">Unit 4</option>
-                <option value="05">Unit 5</option>
-                <option value="06">Unit 6</option>
-                <option value="07">Unit 7</option>
-                <option value="08">Unit 8</option>
-                <option value="09">Unit 9</option>
-                <option value="10">Unit 10</option>
-                <option value="11">Unit 11</option>
-                <option value="12">Unit 12</option>
-                <option value="13">Unit 13</option>
-                <option value="14">Unit 14</option>
-                <option value="15">Unit 15</option>
-                <option value="16">Unit 16</option>
-                <option value="17">Unit 17</option>
-                <option value="18">Unit 18</option>
-                <option value="19">Unit 19</option>
-                <option value="20">Unit 20</option>
-                <option value="21">Unit 21</option>
-                <option value="22">Unit 22</option>
-                <option value="23">Unit 23</option>
-                <option value="24">Unit 24</option>
-                <option value="25">Unit 25</option>
-                <option value="26">Unit 26</option>
-                <option value="27">Unit 27</option>
-                <option value="28">Unit 28</option>
-                <option value="29">Unit 29</option>
-                <option value="30">Unit 30</option>
-                <option value="31">Unit 31</option>
-                <option value="32">Unit 32</option>
-                <option value="33">Unit 33</option>
-                <option value="34">Unit 34</option>
-                <option value="35">Unit 35</option>
-                <option value="36">Unit 36</option>
-                <option value="37">Unit 37</option>
-                <option value="38">Unit 38</option>
-                <option value="39">Unit 39</option>
-                <option value="40">Unit 40</option>
-            </select>
-            <label for="description">Description of Problem:</label>
-            <textarea id="description" name="description" required></textarea>
-            <label for="area">Affected Area / Room:</label>
-            <input type="text" id="area" name="area" required>
-            <label for="image1">Upload Image 1:</label>
-            <input type="file" id="image1" name="image1" accept="image/*">
-            <label for="image2">Upload Image 2:</label>
-            <input type="file" id="image2" name="image2" accept="image/*">
-            <input type="submit" value="Submit">
-        </form>
-        <div class="notification" id="notification"></div>
-        <div class="buttons">
-            <a href="/" class="button">Home</a>
+            .buttons {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button {
+                display: inline-block;
+                margin: 10px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .button:hover {
+                background-color: #555;
+            }
+            .progress-container {
+                display: none;
+                margin-top: 20px;
+                text-align: center;
+            }
+            .progress-bar {
+                width: 100%;
+                background-color: #f3f3f3;
+                border-radius: 3px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+            }
+            .progress-bar-inner {
+                height: 20px;
+                width: 0;
+                background-color: #28a745;
+                transition: width 0.4s ease;
+            }
+            @media (max-width: 600px) {
+                body {
+                    padding-top: 50px;
+                    height: auto;
+                    width: auto;
+                    overflow-x: auto;
+                }
+                .container {
+                    padding: 10px;
+                    margin-top: 10px;
+                    margin-bottom: 20%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>UME Potts Point Maintenance Request Form</h2>
+            <form id="maintenance-form" action="/submit-maintenance" method="post" enctype="multipart/form-data">
+                <label for="name">Resident's Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="room">Resident's Room Number:</label>
+                <select id="room" name="room" required>
+                    <option value="No Room">Select Room</option>
+                    <option value="Studio A">Studio A</option>
+                    <option value="Studio B">Studio B</option>
+                    <option value="01">Unit 1</option>
+                    <option value="02">Unit 2</option>
+                    <option value="03">Unit 3</option>
+                    <option value="04">Unit 4</option>
+                    <option value="05">Unit 5</option>
+                    <option value="06">Unit 6</option>
+                    <option value="07">Unit 7</option>
+                    <option value="08">Unit 8</option>
+                    <option value="09">Unit 9</option>
+                    <option value="10">Unit 10</option>
+                    <option value="11">Unit 11</option>
+                    <option value="12">Unit 12</option>
+                    <option value="13">Unit 13</option>
+                    <option value="14">Unit 14</option>
+                    <option value="15">Unit 15</option>
+                    <option value="16">Unit 16</option>
+                    <option value="17">Unit 17</option>
+                    <option value="18">Unit 18</option>
+                    <option value="19">Unit 19</option>
+                    <option value="20">Unit 20</option>
+                    <option value="21">Unit 21</option>
+                    <option value="22">Unit 22</option>
+                    <option value="23">Unit 23</option>
+                    <option value="24">Unit 24</option>
+                    <option value="25">Unit 25</option>
+                    <option value="26">Unit 26</option>
+                    <option value="27">Unit 27</option>
+                    <option value="28">Unit 28</option>
+                    <option value="29">Unit 29</option>
+                    <option value="30">Unit 30</option>
+                    <option value="31">Unit 31</option>
+                    <option value="32">Unit 32</option>
+                    <option value="33">Unit 33</option>
+                    <option value="34">Unit 34</option>
+                    <option value="35">Unit 35</option>
+                    <option value="36">Unit 36</option>
+                    <option value="37">Unit 37</option>
+                    <option value="38">Unit 38</option>
+                    <option value="39">Unit 39</option>
+                    <option value="40">Unit 40</option>
+                </select>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="No Category">Select Category</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="General Maintenance">General Maintenance</option>
+                    <option value="Missing Item">Missing Item</option>
+                    <option value="Door/DoorLock/Locks">Door / Door Lock / Locks</option>
+                    <option value="Wifi">Wifi</option>
+                    <option value="Refill">Soap / Toilet Paper Refill</option>
+                    <option value="Delivery">Linen Delivery</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="description">Description of Problem:</label>
+                <textarea id="description" name="description" required></textarea>
+                <label for="area">Affected Area / Room:</label>
+                <input type="text" id="area" name="area" required>
+                <label for="image1">Upload Image 1:</label>
+                <input type="file" id="image1" name="image1" accept="image/*">
+                <label for="image2">Upload Image 2:</label>
+                <input type="file" id="image2" name="image2" accept="image/*">
+                <input type="submit" value="Submit">
+            </form>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+            </div>
+            <div class="notification" id="notification"></div>
+            <div class="buttons">
+                <a href="/" class="button">Home</a>
+            </div>
         </div>
-    </div>
-    <script>
-        const form = document.querySelector('form');
-        const notification = document.getElementById('notification');
+        <script>
+            document.getElementById('maintenance-form').addEventListener('submit', function(e) {
+                e.preventDefault();
 
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(form);
-            const response = await fetch('/submit-maintenance', {
-                method: 'POST',
-                body: formData
+                var form = e.target;
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('POST', form.action, true);
+
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = (e.loaded / e.total) * 100;
+                        var progressBar = document.querySelector('.progress-bar-inner');
+                        progressBar.style.width = percentComplete + '%';
+                    }
+                });
+
+                xhr.onloadstart = function() {
+                    document.querySelector('.progress-container').style.display = 'block';
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        document.querySelector('.notification').textContent = 'Your maintenance request has been submitted successfully.';
+                    } else {
+                        document.querySelector('.notification').textContent = 'Failed to submit the maintenance request.';
+                    }
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.querySelector('.progress-bar-inner').style.width = '0';
+                };
+
+                xhr.onerror = function() {
+                    document.querySelector('.notification').textContent = 'An error occurred during the upload.';
+                    document.querySelector('.progress-container').style.display = 'none';
+                    document.querySelector('.progress-bar-inner').style.width = '0';
+                };
+
+                xhr.send(formData);
             });
-
-            if (response.ok) {
-                notification.textContent = 'Data submitted successfully!';
-                form.reset();
-                setTimeout(() => notification.textContent = '', 3000);
-            } else {
-                notification.textContent = 'Error submitting data. Please try again.';
-            }
-        });
-    </script>
-</body>
-</html>
-
+        </script>
+    </body>
+    </html>
  """
 
 guest_form_template = """ 
@@ -680,8 +734,6 @@ guest_form_template = """
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
                 </select>
                 <div id="guests-container">
                     <!-- Guest name fields will be dynamically added here -->
@@ -1156,6 +1208,7 @@ def room_list():
 def submit_maintenance():
     name = request.form['name']
     room = request.form['room']
+    category = request.form['category']
     description = request.form['description']
     area = request.form['area']
 
@@ -1166,13 +1219,17 @@ def submit_maintenance():
     # Create unique IDs for the request and images
     image_ids = []
 
+    # Ensure the images subfolder exists
+    images_folder = os.path.join(app.config['CSV_FOLDER'], app.config['IMAGES_SUBFOLDER'])
+    os.makedirs(images_folder, exist_ok=True)
+
     # Handle image uploads
     for i in range(1, 3):
         image = request.files.get(f'image{i}')
         if image:
             image_id = str(uuid.uuid4())
             image_ids.append(image_id)
-            image_path = os.path.join(app.config['CSV_FOLDER'], f'{image_id}.jpg')
+            image_path = os.path.join(images_folder, f'{image_id}.jpg')
             
             # Open the image and convert it to RGB if necessary
             img = Image.open(image)
@@ -1183,7 +1240,7 @@ def submit_maintenance():
     os.makedirs(app.config['CSV_FOLDER'], exist_ok=True)
 
     filename = os.path.join(app.config['CSV_FOLDER'], 'maintenance_requests.csv')
-    fieldnames = ['timestamp', 'Requester Name', 'Requester Room No', 'Description of Problem', 'Area Affected', 'Image IDs']
+    fieldnames = ['timestamp', 'Requester Name', 'Requester Room No', 'Category', 'Description of Problem', 'Area Affected', 'Image IDs']
 
     if not os.path.isfile(filename):
         with open(filename, 'w', newline='') as file:
@@ -1193,6 +1250,7 @@ def submit_maintenance():
                 'timestamp': timestamp,
                 'Requester Name': name,
                 'Requester Room No': room,
+                'Category': category,
                 'Description of Problem': description,
                 'Area Affected': area,
                 'Image IDs': ', '.join(image_ids)
@@ -1204,12 +1262,14 @@ def submit_maintenance():
                 'timestamp': timestamp,
                 'Requester Name': name,
                 'Requester Room No': room,
+                'Category': category,
                 'Description of Problem': description,
                 'Area Affected': area,
                 'Image IDs': ', '.join(image_ids)
             })
 
     return 'Data submitted successfully!'
+
 
 
 @app.route('/submit-guest', methods=['POST'])
