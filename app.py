@@ -317,6 +317,13 @@ house_rules = """
                 <li>Residents must inform House Manager before using the BBQ.</li>
                 <li>It is resident's responsibility to clean BBQ after use.</li>
             </ul>
+            <h3>FIRE & SAFETY</h3>
+            <ul>
+                <li><b>Do not obstruct pathways leading to fire exits:</b> Ensure that all corridors, stairwells, and paths leading to fire exits are always clear and accessible.</li>
+                <li><b>Do not keep big objects in hallways that can act as hurdles:</b> Large items can block escape routes and hinder evacuation efforts during an emergency.</li>
+                <li><b>Keep fire doors closed at all times:</b> Fire doors are designed to contain the spread of fire and smoke. Ensure they are not propped open.</li>
+                <li><b>Do not tamper with fire safety equipment:</b> Fire alarms, smoke detectors, and sprinkler systems are critical for your safety. Do not disable or interfere with them.</li>
+            </ul>
             <div class="buttons">
                 <a href="/" class="button">Home</a>
             </div>
